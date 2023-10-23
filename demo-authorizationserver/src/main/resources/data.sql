@@ -1,0 +1,1 @@
+INSERT INTO fs_user (user_id, password, role) VALUES ('user1', '$2a$12$LXnbVEPA9RYwN7wkC172bOxRBicYUH5FkzsoeB.Of5mMXFv6fAl.G', 'ROLE_USER');

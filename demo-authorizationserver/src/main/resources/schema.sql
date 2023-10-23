@@ -1,0 +1,6 @@
+CREATE TABLE fs_user (
+    user_id VARCHAR(30) PRIMARY KEY,
+    password VARCHAR(120) NOT NULL,
+    role VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

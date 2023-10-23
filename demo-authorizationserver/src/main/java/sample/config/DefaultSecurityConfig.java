@@ -15,21 +15,23 @@
  */
 package sample.config;
 
-import sample.federation.FederatedIdentityAuthenticationSuccessHandler;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import sample.authentication.FsUserDetails;
+import sample.authentication.FsUserDetailsMixin;
+import sample.federation.FederatedIdentityAuthenticationSuccessHandler;
 
 /**
  * @author Joe Grandja
@@ -39,6 +41,11 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
 public class DefaultSecurityConfig {
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	// @formatter:off
 	@Bean
@@ -68,17 +75,24 @@ public class DefaultSecurityConfig {
 	}
 
 	// @formatter:off
-	@Bean
-	public UserDetailsService users() {
-		UserDetails user = User.withDefaultPasswordEncoder()
-				.username("user1")
-				.password("password")
-				.roles("USER")
-				.build();
-		return new InMemoryUserDetailsManager(user);
-	}
+//	@Bean
+//	public UserDetailsService users() {
+//		UserDetails user = User.withDefaultPasswordEncoder()
+//				.username("user1")
+//				.password("password")
+//				.roles("USER")
+//				.build();
+//		return new InMemoryUserDetailsManager(user);
+//	}
 	// @formatter:on
 
+	@Bean
+	public ObjectMapper objectMapper() {
+	    ObjectMapper mapper = new ObjectMapper();
+	    mapper.addMixIn(FsUserDetails.class, FsUserDetailsMixin.class);
+	    return mapper;
+	}
+	
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
