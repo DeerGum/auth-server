@@ -19,19 +19,13 @@ public class FsUserDetails implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collection = new ArrayList<>();
-		collection.add(new GrantedAuthority() {
-			
-			@Override
-			public String getAuthority() {
-				return user.getRole().toString();
-			}
-		});
+		collection.add((GrantedAuthority) () -> user.getRole().toString());
 		return collection;
 	}
 	
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return user == null ? null : user.getPassword();
 	}
 
 	@Override
