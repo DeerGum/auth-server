@@ -29,5 +29,10 @@ public class LoginController {
 	public String login() {
 		return "login";
 	}
+	
+	@GetMapping("login/oauth2/code/github-idp")
+	public String githubLogin() {
+		return "device-activate";
+	}
 
 }

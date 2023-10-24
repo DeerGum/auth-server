@@ -15,8 +15,6 @@
  */
 package sample.config;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +28,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 
 import sample.authentication.FsUserDetails;
 import sample.authentication.FsUserDetailsMixin;
@@ -92,7 +92,7 @@ public class DefaultSecurityConfig {
 	@Bean
 	public ObjectMapper objectMapper() {
 	    ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new CoreJackson2Module());
+	    mapper.registerModule(new CoreJackson2Module());
 		mapper.activateDefaultTyping(
 				LaissezFaireSubTypeValidator.instance,
 				ObjectMapper.DefaultTyping.NON_FINAL,
